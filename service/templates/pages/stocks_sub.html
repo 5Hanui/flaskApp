@@ -1,0 +1,64 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">코스닥 200 주식관리</h1>
+    </div>
+    {# 컨텐츠 한 세트 #}
+    {# 실제 콘텐츠 #}
+    <fieldset>
+        <form id='searchForm'>
+            <input type="text" name='keyword' placeholder="주식명으로 검색" />
+            <input type='submit' value="검색">
+        </form>
+        <div id='results'>
+            <div>코드 종목명</div>
+        </div>
+    </fieldset>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">주식 목록</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid"
+                                aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending"
+                                            style="width: 187px;">code</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                            aria-label="Position: activate to sort column ascending" style="width: 281px;">name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                            aria-label="Office: activate to sort column ascending" style="width: 135px;">cur</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                            aria-label="Age: activate to sort column ascending" style="width: 61px;">high</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1"
+                                            aria-label="Start date: activate to sort column ascending" style="width: 125px;">low</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <!-- 한줄: 데이터한개->반복구간 -->
+                                    {% for trade in trades: %}
+                                    <tr role="row" class="odd">
+                                        <td>{{trade['code']}}</td>
+                                        <td>{{trade['name']}}</td>
+                                        <td>{{trade.get('cur')}}</td>
+                                        <td>{{trade.get('high')}}</td>
+                                        <td>{{trade.get('low')}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
