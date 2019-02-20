@@ -148,5 +148,49 @@ def initRoute(app):
             return render_template("alertEx.html", msg=msg ,url=url)
             #######################################################3
             # return ''
+
+    @app.route('/graph', methods=['GET', 'POST'])
+    def graph():
+        if request.method == 'GET':
+            return render_template('bbs.html', rows=selectBbsList())
+        else:
+            # 1. 데이터 획득
+            title = request.form.get('title')
+            contents = request.form.get('contents')
+            author = session['uid']
+            f = request.files['files']  # 파일 여러개 업로드할때 하나만 뜸
+            # ----------------------------------------------------------------
+            files = request.files.getlist('files')
+            print('='*10)
+            import os  # 원래는 맨위
+            nmList = list()
+            for file in files:  # 파일리스트
+                # file : 파일
+                print(file.filename)
+                save_path = os.path.join(os.getcwd(),
+                                         'service', 'static', 'upload', file.filename)
+                # 모든 파일을 디스크상에 저장
+                # f->file로 수정후 ctrl+shift+R
+                file.save(save_path)
+                nmList.append('/static/upload/' + file.filename)
+            print('='*10)
+            # ----------------------------------------------------------------
+            data = {
+                "title": title,
+                "contents": contents,
+                "author": author,
+                "path": "|".join(nmList)
+            }
+            msg = None
+            url = None
+            if insertBbsData(data):
+                # 4. 응답(등록되었습니다.) -> 확인 -> /bbs 이동(get)
+                msg = "등록 성공"
+                url = url_for('bbs')
+            else:
+                msg = '등록 실패'
+            return render_template("alertEx.html", msg=msg, url=url)
+            #######################################################3
+            # return ''
             
             
