@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo
+from service.model import insertBbsData, selectBbsList, selectWineInfo, selectWineDetail
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
 # 플라스크 앱 생성
@@ -150,6 +150,21 @@ def initRoute(app):
             return render_template("alertEx.html", msg=msg ,url=url)
             #######################################################3
             # return ''
+
+
+
+
+
+
+    # 와인 정보 페이지
+    @app.route('/wineinfo/<idx>')  # 이요청이 오면 다음으로 처리
+    def wineinfo(idx):
+        print(idx)
+        details = selectWineDetail(idx)
+
+        return render_template('wineinfo.html',details = details)
+
+
 
     @app.route('/graph', methods=['GET', 'POST'])
     def graph():
