@@ -194,5 +194,9 @@ def initRoute(app):
             return render_template("alertEx.html", msg=msg, url=url)
             #######################################################3
             # return ''
-            
-            
+
+    @app.route('/tasteofwine', methods=['GET', 'POST'])
+    def tasteofwine():
+        if request.method == 'GET':
+            return render_template('tasteofwine.html', infos=selectWineInfo())
+

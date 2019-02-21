@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {# jinja엔진은 include옵션을 사용하여 다른 html을 포함시켜 랜더링이 가능#}
+    {% include ['a.html','b.html','mod/head.html'] ignore missing %} {#차례대로 순위대로 확인,없을때 ignore missing로 오류해결#}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/sb-admin-2.css')}}"/>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        {# 사이드바 #}
+        {% include 'mod/sidebar.html' %}
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                {# 상단바 #}
+                {% include 'mod/topbar.html' %}
+                {# 상세 페이지 #}
+                {% include 'pages/tasteofwine_sub.html' %}
+            </div>
+            {% include 'mod/copyright.html' %}
+        </div>
+    </div>
+    {% include 'mod/scroll_top.html' %}
+    {% include 'mod/logout.html' %}
+    {% include 'mod/foot.html' %}
+
+</body>
+
+</html>

@@ -6,7 +6,7 @@ def selectLogin(uid, upw):
     try:
         db_session = sql.connect(host='localhost',
                             user='root',
-                            password='root',
+                            password='1234',
                             db='python_db',
                             charset='utf8',
                             cursorclass=sql.cursors.DictCursor)
@@ -37,7 +37,7 @@ def selectTradeList(pageNo=1, list_len=10): #기본값부여하면 파라미터 
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -70,7 +70,7 @@ def selectSearchWithKeyword(keyword):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -99,7 +99,7 @@ def selectStockByCode(code):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -123,7 +123,7 @@ def updateStockInfoByCode (info):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -155,7 +155,7 @@ def insertBbsData(data):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -191,7 +191,7 @@ def selectBbsList():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -219,7 +219,7 @@ def selectWineInfo():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
