@@ -37,7 +37,28 @@
             <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
+                        {% for info in infos: %}
                         <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <a href="#">{{info['title']}}</a>
+                                    </h4>
+                                    <h5>가격       : ${{info['price']}}</h5>
+                                    <h6>원산지     : {{info['province']}}</h6>
+                                    <h6>Wine Color : {{info['color']}}</h6>
+                                    <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!
+                                                                Lorem ipsum dolor sit amet.</p> -->
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">{{info['points']}}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <!-- <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
                                 <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                                 <div class="card-body">
@@ -46,23 +67,6 @@
                                     </h4>
                                     <h5>$24.99</h5>
                                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                                </div>
-                                <div class="card-footer">
-                                    <small class="text-muted">★ ★ ★ ★ ☆</small>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                        <a href="#">Item Two</a>
-                                    </h4>
-                                    <h5>$24.99</h5>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!
-                                        Lorem ipsum dolor sit amet.</p>
                                 </div>
                                 <div class="card-footer">
                                     <small class="text-muted">★ ★ ★ ★ ☆</small>
@@ -133,7 +137,7 @@
                                     <small class="text-muted">★ ★ ★ ★ ☆</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList
+from service.model import insertBbsData, selectBbsList, selectWineInfo
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
 # 플라스크 앱 생성
@@ -23,7 +23,7 @@ def createApp():
 # 라우트 초기화 담당
 def initRoute(app):
     # 라우트 설정
-    @app.route('/')
+    @app.route('/', methods=['GET', 'POST'])
     def home():
         if not 'uid' in session:  # 세션이 없어도 처음 접근할 수 있는 로그인페이지. 뒤/앞으로가기 버튼 안먹음.
             return redirect(url_for('login'))
@@ -31,6 +31,8 @@ def initRoute(app):
         resp = make_response(render_template('index.html')) #세션은 모든곳에서 사용가능 id 정보 들어있음.!!
         # 쿠키 세팅
         resp.set_cookie('uid', session['uid']) #쿠키도 자료구조 딕셔너리!
+        if request.method == 'GET':
+            return render_template('index.html', infos=selectWineInfo())
         return resp #응답을 가로채서 던짐.
 
     # 로그인
@@ -152,7 +154,7 @@ def initRoute(app):
     @app.route('/graph', methods=['GET', 'POST'])
     def graph():
         if request.method == 'GET':
-            return render_template('bbs.html', rows=selectBbsList())
+            return render_template('graph.html', rows=selectBbsList())
         else:
             # 1. 데이터 획득
             title = request.form.get('title')

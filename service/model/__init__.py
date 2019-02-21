@@ -201,7 +201,35 @@ def selectBbsList():
             # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
             # format()를 이용하여 쿼리문을 먼저 완성하고 수행
             sql_str = '''
-            SELECT * FROM tbl_bbs ORDER BY id DESC limit 10;
+            SELECT * FROM tbl_bbs ORDER BY id DESC limit 6;
+            '''
+            cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
+            rows = cursor.fetchall()  # row는 회원정보
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+    return rows
+
+# 메인페이지 - 와인 데이터 가져오기
+def selectWineInfo():
+    db_session = None
+    rows = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='root',
+                                 db='winedata',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+
+        with db_session.cursor() as cursor:
+            # %가 중첩으로 사용이 되서 쿼리 수행시 파라미터를
+            # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
+            # format()를 이용하여 쿼리문을 먼저 완성하고 수행
+            sql_str = '''
+            SELECT * FROM wineinfo ORDER BY id asc limit 10;
             '''
             cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
             rows = cursor.fetchall()  # row는 회원정보
@@ -228,26 +256,27 @@ if __name__ == '__main__':
     # print(selectSearchWithKeyword('ㅇㄹㄴㄹ'))
     # print(selectStockByCode('005930'))
     # 종목 정보 수정
-    if None:
-        info = {
-            'CODE':'005935',
-            'cur':'41',
-            'rate': '2.2'
-        }
-        if updateStockInfoByCode(info):
-            print('수정성공')
-        else:
-            print('수정실패')
-    # 자료실 데이터 추가.
-        data = dict()
-        data['title']  = '제목'       
-        data['contents'] = '내용',
-        data['author'] = '작성자',
-        data['path'] = '파일경로'
-        if insertBbsData(data): print('등록성공') #statement한줄일경우 옆으로 써도됨.
-        else: print('등록실패')
-    # 자료실 데이터 가져오기
-    print(selectBbsList())
+    # if None:
+    #     info = {
+    #         'CODE':'005935',
+    #         'cur':'41',
+    #         'rate': '2.2'
+    #     }
+    #     if updateStockInfoByCode(info):
+    #         print('수정성공')
+    #     else:
+    #         print('수정실패')
+    # # 자료실 데이터 추가.
+    #     data = dict()
+    #     data['title']  = '제목'       
+    #     data['contents'] = '내용',
+    #     data['author'] = '작성자',
+    #     data['path'] = '파일경로'
+    #     if insertBbsData(data): print('등록성공') #statement한줄일경우 옆으로 써도됨.
+    #     else: print('등록실패')
+    # # 자료실 데이터 가져오기
+    # print(selectBbsList())
+    print(selectWineInfo())
 
 
     
