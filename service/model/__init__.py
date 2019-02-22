@@ -6,7 +6,7 @@ def selectLogin(uid, upw):
     try:
         db_session = sql.connect(host='localhost',
                             user='root',
-                            password='11111111',
+                            password='1234',
                             db='python_db',
                             charset='utf8',
                             cursorclass=sql.cursors.DictCursor)
@@ -17,6 +17,7 @@ def selectLogin(uid, upw):
             row = cursor.fetchone() #row는 회원정보
             # 디비쿼리문은 판단하지 않는다.
             # 오직 수행의 결과만을 제시한다.
+
             # (단, 쿼리상으로 어느정도 로직을 해결할 수 있다.)
     except Exception as e:
         print(e)
@@ -37,7 +38,7 @@ def selectTradeList(pageNo=1, list_len=10): #기본값부여하면 파라미터 
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -70,7 +71,7 @@ def selectSearchWithKeyword(keyword):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -99,7 +100,7 @@ def selectStockByCode(code):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -123,7 +124,7 @@ def updateStockInfoByCode (info):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -155,7 +156,7 @@ def insertBbsData(data):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -197,7 +198,7 @@ def selectBbsList():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -220,13 +221,12 @@ def selectBbsList():
 
 def selectWineDetail(idx):
 
-    print("###################################################################")
     db_session = None
     rows = None
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -250,6 +250,52 @@ def selectWineDetail(idx):
     return rows
 
 
+def inputPointInfo(user_id, point_list, title_list):
+    db_session = None
+    rows = None
+
+    for i in range (1,11):
+        try:
+            db_session = sql.connect(host='localhost',
+                                    user='root',
+                                    password='1234',
+                                    db='winedata',
+                                    charset='utf8',
+                                    cursorclass=sql.cursors.DictCursor)
+
+            with db_session.cursor() as cursor:
+                # %가 중첩으로 사용이 되서 쿼리 수행시 파라미터를
+                # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
+                # format()를 이용하여 쿼리문을 먼저 완성하고 수행
+                
+                
+                sql_str = '''
+                    INSERT INTO pointinfo
+                    (point, title, id) 
+                    VALUES
+                    (%s, %s, %s);
+
+
+                    '''
+                # print('##################################################')
+                # print(point_list[i])
+                # print(title_list[i])
+                # print(user_id)
+
+                # print(type(user_id))
+
+                cursor.execute(sql_str,(
+                            (point_list[i]), 
+                            (title_list[i]), 
+                            (user_id)
+                            ))
+
+                db_session.commit()
+
+        finally:
+            if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+                db_session.close()
+    return 
 
 
 
@@ -260,7 +306,7 @@ def selectWineInfo():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='11111111',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)

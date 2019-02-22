@@ -12,49 +12,58 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-1 text-gray-800">취향 저격 와인 추천</h1>
-    <p class="mb-4">현재까지 드셨던 와인의 별점을 매겨주세요. 취향에 맞는 와인을 추천해드릴게요</p>
+    <p class="mb-4">현재까지 마셔보셨던 와인의 별점을 매겨주세요. 취향에 맞는 와인을 추천해드릴게요.</p>
 
     <!-- Content Row -->
-    <div class="row">
+    <div class="row"> 
 
       <!-- Border Left Utilities -->
-      <div class="overlay">
+        <!-- <form id = 'submit' moethods="POST" enctype="multipart/form-data"> -->
+          <form action = "pointsinfo" accept-charset="utf-8" >
+          <div class="overlay">
                 {% for info in infos: %}
                     <div class="card mb-4 py-3 border-left-primary">
                     <div class="card-body">
                             <div class="col-lg-8 col-md-3 mb-3">
-
-                                        <h5>이름       : ${{info['title']}}</h5>
+                                        <h5>이름       : {{info['title']}}</h5>
                                         <h6>원산지     : {{info['province']}}</h6>
+                                        <h11>와인 일련번호        : {{info['id']}}</h11>
+                                        <input type="hidden" name="rating_id{{loop.index}}" value="{{info['id']}}"/>
+                                        
+                                        
+                                        
                                         <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!
                                                                     Lorem ipsum dolor sit amet.</p> -->
-
                             </div>
                         <fieldset class="rating">
                             <input type="radio" id="star5{{loop.index}}" name="rating{{loop.index}}" value="5" /><label class = "full" for="star5{{loop.index}}" title="Awesome - 5 stars"></label>
-                            <input type="radio" id="star4half{{loop.index}}" name="rating{{loop.index}}" value="4 and a half" /><label class="half" for="star4half{{loop.index}}" title="Pretty good - 4.5 stars"></label>
+                            <input type="radio" id="star4half{{loop.index}}" name="rating{{loop.index}}" value="4.5" /><label class="half" for="star4half{{loop.index}}" title="Pretty good - 4.5 stars"></label>
                             <input type="radio" id="star4{{loop.index}}" name="rating{{loop.index}}" value="4" /><label class = "full" for="star4{{loop.index}}" title="Pretty good - 4 stars"></label>
-                            <input type="radio" id="star3half{{loop.index}}" name="rating{{loop.index}}" value="3 and a half" /><label class="half" for="star3half{{loop.index}}" title="Meh - 3.5 stars"></label>
+                            <input type="radio" id="star3half{{loop.index}}" name="rating{{loop.index}}" value="3.5" /><label class="half" for="star3half{{loop.index}}" title="Meh - 3.5 stars"></label>
                             <input type="radio" id="star3{{loop.index}}" name="rating{{loop.index}}" value="3" /><label class = "full" for="star3{{loop.index}}" title="Meh - 3 stars"></label>
-                            <input type="radio" id="star2half{{loop.index}}" name="rating{{loop.index}}" value="2 and a half" /><label class="half" for="star2half{{loop.index}}" title="Kinda bad - 2.5 stars"></label>
+                            <input type="radio" id="star2half{{loop.index}}" name="rating{{loop.index}}" value="2.5" /><label class="half" for="star2half{{loop.index}}" title="Kinda bad - 2.5 stars"></label>
                             <input type="radio" id="star2{{loop.index}}" name="rating{{loop.index}}" value="2" /><label class = "full" for="star2{{loop.index}}" title="Kinda bad - 2 stars"></label>
-                            <input type="radio" id="star1half{{loop.index}}" name="rating{{loop.index}}" value="1 and a half" /><label class="half" for="star1half{{loop.index}}" title="Meh - 1.5 stars"></label>
+                            <input type="radio" id="star1half{{loop.index}}" name="rating{{loop.index}}" value="1.5" /><label class="half" for="star1half{{loop.index}}" title="Meh - 1.5 stars"></label>
                             <input type="radio" id="star1{{loop.index}}" name="rating{{loop.index}}" value="1" /><label class = "full" for="star1{{loop.index}}" title="Sucks big time - 1 star"></label>
-                            <input type="radio" id="starhalf{{loop.index}}" name="rating{{loop.index}}" value="half" /><label class="half" for="starhalf{{loop.index}}" title="Sucks big time - 0.5 stars"></label>
+                            <input type="radio" id="starhalf{{loop.index}}" name="rating{{loop.index}}" value="0.5" /><label class="half" for="starhalf{{loop.index}}" title="Sucks big time - 0.5 stars"></label>
                         </fieldset>
                     </div>
                     </div>
                     {% endfor %}
       </div>
-
+      
       </div>
       <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-      <a href="#" class="btn btn-primary btn-icon-split">
+      
+      <button type='submit' class='btn btn-primary btn-icon-split'>제출하기</button>
+      {#
+      <a href="/pointsinfo/" class="btn btn-primary btn-icon-split">
             <span class="icon text-white-30">
               <i class="fas fa-arrow-righ"></i>
             </span>
             <span id="mySpan" onclick="MyClick()">제출하기</span>
           </a>
-          
+          #}
+        </form>    
 
   </div>

@@ -1,7 +1,11 @@
-a = ['A','B','C']
-# 출력결과 : A|B|C
-# 조인 // 리스트나 문자열은 시퀀스 타입
-tmp = '|'.join(a)
-print(tmp)
-# 분해
-print(tmp.split('|')) # 다시 리스틀 바뀜...
+rating1=0
+rating2=None
+rating3=None
+rating4=None
+rating5=None
+
+for i in range(1,6):
+    if (globals()['rating{}'.format(i)]) == None:
+        globals()['rating{}'.format(i)] = 0
+    globals()['star{}'.format(i)] = globals()['rating{}'.format(i)]
+    print(globals()['star{}'.format(i)])

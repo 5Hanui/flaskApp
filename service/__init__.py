@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, selectWineDetail
+from service.model import insertBbsData, selectBbsList, selectWineInfo, selectWineDetail, inputPointInfo
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
 # 플라스크 앱 생성
@@ -214,4 +214,26 @@ def initRoute(app):
     def tasteofwine():
         if request.method == 'GET':
             return render_template('tasteofwine.html', infos=selectWineInfo())
+
+    @app.route('/pointsinfo/', methods=['GET', 'POST'])
+    def pointsinfo():
+        point_list = {}
+        title_list = {}
+        user_id = session['uid']
+        for i in range(1,11):
+            title_list[i] = request.values.get(f'rating_id{i}')
+            point_list[i] = request.values.get(f'rating{i}')
+            id_list = request.form.get('id')
+            id = request.form.get('user_id')
+            if (point_list[i]) == None:
+                point_list[i] = 0
+        print(point_list)
+        print(session['uid'])
+        print(title_list)
+
+        inputPointInfo(user_id,point_list,title_list)
+        
+        
+        return render_template('pointsinfo.html', infos=selectWineInfo())
+         
 
