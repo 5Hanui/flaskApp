@@ -185,12 +185,6 @@ def insertBbsData(data):
     # 영향을 받은 row의 수를 반환
     return affected_row
 
-
-
-
-
-
-
 # 자료실 게시판 최신 데이터 10개만 가져오기
 def selectBbsList():
     db_session = None
@@ -360,6 +354,34 @@ def searchWineInfo(key):
     return rows
 
 
+def selectUser():
+    db_session = None
+    row = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='root',
+                                 db='winedata',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+        print("디비접속성공")
+        with db_session.cursor() as cursor:
+            sql_str = "SELECT * FROM user_rec ORDER BY id;"
+            cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
+            row = cursor.fetchall()  # row는 회원정보
+            # 디비쿼리문은 판단하지 않는다.
+            # 오직 수행의 결과만을 제시한다.
+            # (단, 쿼리상으로 어느정도 로직을 해결할 수 있다.)
+            print(row)
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+            print("디비접속해제성공")
+    #쿼리결과인 회원정보리턴
+    return row
+
 # 코드를 테스트할 때는 원하지 않을 때 작동되지 않도록
 # 처리구문필요
 if __name__ == '__main__':
@@ -394,8 +416,8 @@ if __name__ == '__main__':
     #     if insertBbsData(data): print('등록성공') #statement한줄일경우 옆으로 써도됨.
     #     else: print('등록실패')
     # # 자료실 데이터 가져오기
-    # print(selectBbsList())
-    pass
+    print(selectUser())
+    # pass
 
 
     
