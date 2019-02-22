@@ -326,6 +326,38 @@ def selectWineInfo():
         if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
             db_session.close()
     return rows
+# 메인페이지 - 와인 검색
+def searchWineInfo(key):
+    print(key)
+    
+    db_session = None
+    rows = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='1234',
+                                 db='winedata',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+
+        with db_session.cursor() as cursor:
+            # %가 중첩으로 사용이 되서 쿼리 수행시 파라미터를
+            # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
+            # format()를 이용하여 쿼리문을 먼저 완성하고 수행
+            sql_str = '''
+            SELECT * FROM wineinfo WHERE (description LIKE '%{0}%' OR description LIKE '%{1}%') 
+            AND (title LIKE '%{2}%' ) ORDER BY id asc LIMIT 12;
+            ''' .format(key['taste1'], key['taste2'], key['wineKeyword'])
+            print(sql_str)
+            # 튜플이 1개일 경우 ('m',
+            cursor.execute(sql_str)
+            rows = cursor.fetchall()  # row는 회원정보
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+    return rows
 
 
 # 코드를 테스트할 때는 원하지 않을 때 작동되지 않도록
@@ -363,7 +395,7 @@ if __name__ == '__main__':
     #     else: print('등록실패')
     # # 자료실 데이터 가져오기
     # print(selectBbsList())
-    print(selectWineInfo())
+    pass
 
 
     
