@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail
+from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo
 from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
@@ -26,7 +26,7 @@ def initRoute(app):
     # 라우트 설정
     @app.route('/', methods=['GET', 'POST'])
     def home():
-        learn(1)
+        # learn(1)
         if not 'uid' in session:  # 세션이 없어도 처음 접근할 수 있는 로그인페이지. 뒤/앞으로가기 버튼 안먹음.
             return redirect(url_for('login'))
         # 로그인 성공 => 쿠키 설정.
@@ -34,6 +34,8 @@ def initRoute(app):
         # 쿠키 세팅
         resp.set_cookie('uid', session['uid']) #쿠키도 자료구조 딕셔너리!
         if request.method == 'GET':
+            infos = selectWineInfo()
+            print(infos)
             return render_template('index.html', infos=selectWineInfo())
         else:
             taste1 = request.form.get('taste1')
@@ -126,7 +128,7 @@ def initRoute(app):
     def bbs():
         if request.method == 'GET':
             return render_template('bbs.html'
-                            , rows=selectBbsList())
+                            , infos=selectWineInfo())
         else:
             # 1. 데이터 획득
             title       = request.form.get('title')
@@ -230,4 +232,26 @@ def initRoute(app):
     def tasteofwine():
         if request.method == 'GET':
             return render_template('tasteofwine.html', infos=selectWineInfo())
+
+    @app.route('/pointsinfo/', methods=['GET', 'POST'])
+    def pointsinfo():
+        point_list = {}
+        title_list = {}
+        user_id = session['uid']
+        for i in range(1,11):
+            title_list[i] = request.values.get(f'rating_id{i}')
+            point_list[i] = request.values.get(f'rating{i}')
+            id_list = request.form.get('id')
+            id = request.form.get('user_id')
+            if (point_list[i]) == None:
+                point_list[i] = 0
+        print(point_list)
+        print(session['uid'])
+        print(title_list)
+
+        inputPointInfo(user_id,point_list,title_list)
+        
+        
+        return render_template('pointsinfo.html', infos=selectWineInfo())
+         
 
