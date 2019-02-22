@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, m
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
 from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail
+from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
 # 플라스크 앱 생성W
@@ -25,6 +26,7 @@ def initRoute(app):
     # 라우트 설정
     @app.route('/', methods=['GET', 'POST'])
     def home():
+        learn(1)
         if not 'uid' in session:  # 세션이 없어도 처음 접근할 수 있는 로그인페이지. 뒤/앞으로가기 버튼 안먹음.
             return redirect(url_for('login'))
         # 로그인 성공 => 쿠키 설정.

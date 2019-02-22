@@ -13,10 +13,10 @@
             <form id='searchWine' method="POST" enctype="multipart/form-data">
                 <fieldset>
                     <div class="row">
-                        <div class="col-sm-12 col-md-6">
-                            <div class="input-group" style="margin-bottom: 0;">
-                                <label>Show 
-                                    <select onchange="categoryChange(this)" name='taste1'>
+                        <div class="col-sm-12 col-md-12">
+                            <div class="input-group" >
+                                <label>Taste
+                                    <select class="form-control" onchange="categoryChange(this)" name='taste1'>
                                         <option>Select</option>
                                         <option value="a">spicy</option>
                                         <option value="b">fruity</option>
@@ -29,15 +29,28 @@
                                         <option value="i">sweet</option>
                                         <option value="j">dry</option>
                                     </select>
-                                    <select id="good" name='taste2'>
+                                    <select class="form-control" id="good" name='taste2'>
                                         <option>Select</option>
+                                    </select>
+                                    Country
+                                    <select class="form-control" name='country'>
+                                        <option>원산지</option>
+                                        <option>US</option>
+                                        <option>France</option>
+                                        <option>Italy</option>
+                                        <option>Austria</option>
+                                        <option>Portugal</option>
                                     </select>
                                 </label>
                             </div>
                         </div>
+                        
+                    </div>
+                    <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="input-group">
-                                <input type="text" name='wineKeyword'class="form-control border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <input type="text" name='wineKeyword' class="form-control border-1 small" placeholder="Search for..."
+                                    aria-label="Search" aria-describedby="basic-addon2">
                                 <!-- <div class="input-group-append"> -->
                                 <!-- <input class="btn btn-primary" type="submit" value="검색" /> -->
                             </div>

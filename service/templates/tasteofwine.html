@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {# jinja엔진은 include옵션을 사용하여 다른 html을 포함시켜 랜더링이 가능#}
     {% include ['a.html','b.html','mod/head.html'] ignore missing %} {#차례대로 순위대로 확인,없을때 ignore missing로 오류해결#}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/sb-admin-2.css')}}"/>
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="static/css/sb-admin-2.css" type="text/css"/>
+    <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
 </head>
-
 <body id="page-top">
     <div id="wrapper">
         {# 사이드바 #}
