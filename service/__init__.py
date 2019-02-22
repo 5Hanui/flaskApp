@@ -62,7 +62,7 @@ def initRoute(app):
             if not uid: # 쿠키 없으면
                 uid = '' #쿠키는 아이디를 들고 있거나 없거나.
             return render_template('login.html',
-                    title='데이터 분석관리 로그인',uid=uid)
+                    title='와인 파인더(WiFi)',uid=uid)
         else: 
             # 잘 넘어오는지 체크
             uid = request.form.get('uid')
@@ -83,6 +83,14 @@ def initRoute(app):
                 else: #회원아니다
                     return render_template("alertEx.html", msg='회원아님')
     
+    @app.route('/register')
+    def register():
+        # ufname = request.form.get('ufname')
+        # ulname = request.form.get('ulname')
+        # uid = request.form.get('uid')
+        # upw = request.form.get('upw')
+        return render_template("register.html")
+
     # 로그아웃
     @app.route('/logout') #로그아웃은 화면이 없고 일만하고 던짐.
     def logout():
