@@ -124,7 +124,7 @@ def initRoute(app):
     def bbs():
         if request.method == 'GET':
             return render_template('bbs.html'
-                            , rows=selectBbsList())
+                            , infos=selectWineInfo())
         else:
             # 1. 데이터 획득
             title       = request.form.get('title')
