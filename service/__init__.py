@@ -9,10 +9,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo
+from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
-# 플라스크 앱 생성
+# 플라스크 앱 생성W
 def createApp():
     app = Flask(__name__)
     # 1. 세션 키 생성 => 통상 값은 해쉬값(중복되지 않는 임의값) 사용
@@ -33,6 +33,20 @@ def initRoute(app):
         resp.set_cookie('uid', session['uid']) #쿠키도 자료구조 딕셔너리!
         if request.method == 'GET':
             return render_template('index.html', infos=selectWineInfo())
+        else:
+            taste1 = request.form.get('taste1')
+            tasteBig = {'a': 'spicy', 'b': 'fruity', 'c': 'acidity', 'd': 'floral',
+                        'e': 'oaky', 'f': 'citrus', 'g': 'woody', 'h': 'light', 'i': 'sweet', 'j': 'dry'}
+            taste2 = request.form.get('taste2')
+            wineKeyword = request.form.get('wineKeyword')
+            if (taste1 == 'Select') and (taste2=='Select') and (wineKeyword == ''):
+                return render_template('index.html', infos=selectWineInfo())
+            search = {'taste1': tasteBig[taste1],'taste2': taste2, 'wineKeyword': wineKeyword}
+            infos=searchWineInfo(search)
+            if infos==():
+                return render_template("alertEx.html", msg='입력결과가 없습니다.', url='/')
+            return render_template('index.html', infos=searchWineInfo(search))
+
         return resp #응답을 가로채서 던짐.
 
     # 로그인

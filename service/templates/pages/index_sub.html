@@ -10,28 +10,42 @@
     <div class="card shadow mb-4">
         <div class="card-header">
             <!-- <h6 class="m-0 font-weight-bold text-primary">와인 목록</h6> -->
-            <div class="row" style="float: right">
-                <!-- <div class="col-sm-12 col-md-6">
-                    <div class="dataTables_length" id="dataTable_length"><label>Show <select name="dataTable_length" aria-controls="dataTable"
-                                class="custom-select custom-select-sm form-control form-control-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select> entries</label></div>
-                </div> -->
+            <form id='searchWine' method="POST" enctype="multipart/form-data">
                 <fieldset>
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control border-0 small" placeholder="Search for..." aria-label="Search"
-                                aria-describedby="basic-addon2">
-                            <!-- <div class="input-group-append"> -->
-                            <input class="btn btn-primary" type="submit" value="검색" />
-                            <!-- </div> -->
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <label>Show 
+                                    <select onchange="categoryChange(this)" name='taste1'>
+                                        <option>Select</option>
+                                        <option value="a">spicy</option>
+                                        <option value="b">fruity</option>
+                                        <option value="c">acidity</option>
+                                        <option value="d">floral</option>
+                                        <option value="e">oaky</option>
+                                        <option value="f">citrus</option>
+                                        <option value="g">woody</option>
+                                        <option value="h">light</option>
+                                        <option value="i">sweet</option>
+                                        <option value="j">dry</option>
+                                    </select>
+                                    <select id="good" name='taste2'>
+                                        <option>Select</option>
+                                    </select>
+                                </label>
+                            </div>
                         </div>
-                    </form>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="input-group">
+                                <input type="text" name='wineKeyword'class="form-control border-1 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                <!-- <div class="input-group-append"> -->
+                                <!-- <input class="btn btn-primary" type="submit" value="검색" /> -->
+                            </div>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="검색" />
+                    </div>
                 </fieldset>
-            </div>
+            </form>
         </div>
         <div class="card-body">
             <div class="table-responsive">
