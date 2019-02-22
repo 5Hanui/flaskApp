@@ -184,6 +184,12 @@ def insertBbsData(data):
     # 영향을 받은 row의 수를 반환
     return affected_row
 
+
+
+
+
+
+
 # 자료실 게시판 최신 데이터 10개만 가져오기
 def selectBbsList():
     db_session = None
@@ -211,6 +217,41 @@ def selectBbsList():
         if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
             db_session.close()
     return rows
+
+def selectWineDetail(idx):
+
+    print("###################################################################")
+    db_session = None
+    rows = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='root',
+                                 db='winedata',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+        
+        with db_session.cursor() as cursor:
+            # %가 중첩으로 사용이 되서 쿼리 수행시 파라미터를
+            # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
+            # format()를 이용하여 쿼리문을 먼저 완성하고 수행
+            sql_str ='''
+            SELECT * FROM wineinfo Where id = %s; 
+            '''
+            cursor.execute(sql_str, idx)  # 튜플이 1개일 경우 ('m',
+            rows = cursor.fetchall()  # row는 회원정보
+ 
+        print(rows)
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+    return rows
+
+
+
+
 
 # 메인페이지 - 와인 데이터 가져오기
 def selectWineInfo():
