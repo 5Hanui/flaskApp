@@ -8,8 +8,8 @@
 '''
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
-from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, selectId, selectRec, insertUserInfo
+from service.model import selectLogin
+from service.model import selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, selectId, selectRec, insertUserInfo
 from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
@@ -101,31 +101,19 @@ def initRoute(app):
         # 홈페이지 리다이렉트
         return redirect(url_for('home'))
 
-    # 주식관리 페이지
-    @app.route('/stocks')  # 이요청이 오면 다음으로 처리
-    def stocks():
-        try:  # http://127.0.0.1:5000/?no=2&amt=10 페이지 이동 가능
-            pageNo = int(request.args.get('no'))
-            list_len = int(request.args.get('amt'))
-        except Exception as e:
-            pageNo = 1
-            list_len = 10
-        rows    = stl(pageNo=pageNo, list_len=list_len)
-        return render_template('stocks.html', trades=rows)
-
     # POST 전용
-    @app.route('/search', methods=['POST'])
-    def search():  # 아무것도 안쓰면 GET방식..
-        # 1. 전달된 데이터 획득 -> print로 출력
-        keyword = request.form.get('keyword')  # 키:input태그 속성
-        print(keyword)
-        # 2. 데이터를 d8로 보내서 쿼리 수행
-        rows = selectSearchWithKeyword(keyword)
-        if not rows:  # 결과가 없다면
-            rows = "{}"
-        # 3. 검색 결과를 받아서 json으로 응답(기존 웹화면구성)
-        # => 이런식으로 구성된 서버=>미들웨어/어플리케이션서버
-        return jsonify(rows)
+    # @app.route('/search', methods=['POST'])
+    # def search():  # 아무것도 안쓰면 GET방식..
+    #     # 1. 전달된 데이터 획득 -> print로 출력
+    #     keyword = request.form.get('keyword')  # 키:input태그 속성
+    #     print(keyword)
+    #     # 2. 데이터를 d8로 보내서 쿼리 수행
+    #     rows = selectSearchWithKeyword(keyword)
+    #     if not rows:  # 결과가 없다면
+    #         rows = "{}"
+    #     # 3. 검색 결과를 받아서 json으로 응답(기존 웹화면구성)
+    #     # => 이런식으로 구성된 서버=>미들웨어/어플리케이션서버
+    #     return jsonify(rows)
 
     # 와인추천
     @app.route('/rec')
