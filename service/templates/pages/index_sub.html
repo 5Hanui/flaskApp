@@ -67,7 +67,11 @@
                         {% for info in infos: %}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
-                                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                                {% if info['color'] == 'red': %}
+                                <a href="#"><img class="card-img-top" src="/static/upload/5135c595354e07b1c4d943cd8890f5ee.jpg" alt=""></a>
+                                {% else: %}
+                                <a href="#"><img class="card-img-top" src="/static/upload/e5ebe3ac97507715f877aeccdc5f38ba.jpg" alt=""></a>
+                                {% endif %}
                                 <div class="card-body">
                                     <h4 class="card-title">
                                         <a href="/wineinfo/{{info['id']}}">{{info['title']}}</a>                                                    </h4>
