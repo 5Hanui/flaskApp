@@ -26,9 +26,8 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-
 <body class="bg-gradient-primary">
-
+  <form id= action = "login" accept-charset="utf-8" method ="POST" enctype="multipart/form-data">
   <div class="container" id="container">
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
@@ -44,23 +43,23 @@
               <form class="user">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                    <input type="text" name = "user_fname" value = "{{user_fname}}" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                    <input type="text" name = "user_lname" value = "{{user_fname}}" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="id">
+                  <input type="text" name = "user_id" value = "{{user_fname}}" class="form-control form-control-user" id="exampleInputEmail" placeholder="id">
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-12 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input type="password" name = "user_pw" value = "{{user_fname}}" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                   </div>
                 </div>
-                <a href="login" class="btn btn-primary btn-user btn-block">
+                <button type="submit" class="btn btn-primary btn-user btn-block">
                   Register Account
-                </a>
+                </button>
                 <hr>
               </form>
               <hr>
@@ -74,7 +73,7 @@
     </div>
 
   </div>
-
+</form>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

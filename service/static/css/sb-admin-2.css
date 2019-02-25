@@ -11423,6 +11423,12 @@ a:focus {
   background-size: cover;
 }
 
+.bg-index-image {
+  background: url("https://i.pinimg.com/564x/29/f9/f1/29f9f1c2ff0f00a4cb5266c0fb8061c6.jpg?b=t");
+  background-position: center;
+  background-size: cover;
+}
+
 .bg-password-image {
   background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
   background-position: center;

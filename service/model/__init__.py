@@ -1,19 +1,19 @@
 import pymysql as sql
 
-def selectLogin(uid, upw):
+def selectLogin(user_id, user_pw):
     db_session = None
     row = None
     try:
         db_session = sql.connect(host='localhost',
                             user='root',
-                            password='root',
-                            db='python_db',
+                            password='1234',
+                            db='winedata',
                             charset='utf8',
                             cursorclass=sql.cursors.DictCursor)
         print("디비접속성공")
         with db_session.cursor() as cursor:
-            sql_str = "SELECT * FROM users WHERE uid=%s AND upw=%s;"
-            cursor.execute(sql_str, (uid, upw))  # 튜플이 1개일 경우 ('m',
+            sql_str = "SELECT * FROM user_info WHERE user_id=%s AND user_pw=%s;"
+            cursor.execute(sql_str, (user_id, user_pw))  # 튜플이 1개일 경우 ('m',
             row = cursor.fetchone() #row는 회원정보
             # 디비쿼리문은 판단하지 않는다.
             # 오직 수행의 결과만을 제시한다.
@@ -38,7 +38,7 @@ def selectTradeList(pageNo=1, list_len=10): #기본값부여하면 파라미터 
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -71,7 +71,7 @@ def selectSearchWithKeyword(keyword):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -100,7 +100,7 @@ def selectStockByCode(code):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -124,7 +124,7 @@ def updateStockInfoByCode (info):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -156,7 +156,7 @@ def insertBbsData(data):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -192,7 +192,7 @@ def selectBbsList():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -220,7 +220,7 @@ def selectWineDetail(idx):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -251,7 +251,7 @@ def inputPointInfo(user_id, point_list, title_list):
         try:
             db_session = sql.connect(host='localhost',
                                     user='root',
-                                     password='root',
+                                     password='1234',
                                     db='winedata',
                                     charset='utf8',
                                     cursorclass=sql.cursors.DictCursor)
@@ -291,6 +291,41 @@ def inputPointInfo(user_id, point_list, title_list):
     return rows
 
 
+def insertUserInfo(user_fname, user_lname, user_id, user_pw):
+    db_session = None
+    rows = None
+
+    try:
+        db_session = sql.connect(host='localhost',
+                                user='root',
+                                password='1234',
+                                db='winedata',
+                                charset='utf8',
+                                cursorclass=sql.cursors.DictCursor)
+
+        with db_session.cursor() as cursor:
+
+            sql_str = '''
+                INSERT INTO user_info
+                (user_fname, user_lname, user_id, user_pw) 
+                VALUES
+                (%s ,%s, %s, %s);
+                '''
+
+            cursor.execute(sql_str,(
+                        user_fname,
+                        user_lname,  
+                        user_id,
+                        user_pw
+                        ))
+
+            db_session.commit()
+
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+    return 
+
 
 # 메인페이지 - 와인 데이터 가져오기
 def selectWineInfo():
@@ -299,7 +334,7 @@ def selectWineInfo():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -326,7 +361,7 @@ def searchWineInfo(key):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -356,7 +391,7 @@ def selectUser():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -378,20 +413,20 @@ def selectUser():
     #쿼리결과인 회원정보리턴
     return row
 
-def selectId(uid):
+def selectId(user_id):
     db_session = None
     row = None
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
         print("디비접속성공")
         with db_session.cursor() as cursor:
-            sql_str = "SELECT id FROM users where uid=%s ORDER BY id;"
-            cursor.execute(sql_str,(uid,))  # 튜플이 1개일 경우 ('m',
+            sql_str = "SELECT id FROM users where user_id=%s ORDER BY id;"
+            cursor.execute(sql_str,(user_id,))  # 튜플이 1개일 경우 ('m',
             row = cursor.fetchall()  # row는 회원정보
             # 디비쿼리문은 판단하지 않는다.
             # 오직 수행의 결과만을 제시한다.
@@ -414,7 +449,7 @@ def selectRec(wineList):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='root',
+                                 password='1234',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)

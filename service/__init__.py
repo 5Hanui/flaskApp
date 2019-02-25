@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, selectId, selectRec
+from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, selectId, selectRec, insertUserInfo
 from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
@@ -27,12 +27,12 @@ def initRoute(app):
     @app.route('/', methods=['GET', 'POST'])
     def home():
         # learn(1)
-        if not 'uid' in session:  # 세션이 없어도 처음 접근할 수 있는 로그인페이지. 뒤/앞으로가기 버튼 안먹음.
+        if not 'user_id' in session:  # 세션이 없어도 처음 접근할 수 있는 로그인페이지. 뒤/앞으로가기 버튼 안먹음.
             return redirect(url_for('login'))
         # 로그인 성공 => 쿠키 설정.
         resp = make_response(render_template('index.html')) #세션은 모든곳에서 사용가능 id 정보 들어있음.!!
         # 쿠키 세팅
-        resp.set_cookie('uid', session['uid']) #쿠키도 자료구조 딕셔너리!
+        resp.set_cookie('user_id', session['user_id']) #쿠키도 자료구조 딕셔너리!
         if request.method == 'GET':
             infos = selectWineInfo()
             return render_template('index.html', infos=selectWineInfo())
@@ -61,48 +61,41 @@ def initRoute(app):
     def login():
         if request.method=='GET':
             # 쿠키를 읽어와서 아이디창에 채운다.
-            uid = request.cookies.get('uid')
-            if not uid: # 쿠키 없으면
-                uid = '' #쿠키는 아이디를 들고 있거나 없거나.
+            user_id = request.cookies.get('user_id')
+            if not user_id: # 쿠키 없으면
+                user_id = '' #쿠키는 아이디를 들고 있거나 없거나.
             return render_template('login.html',
-                    title='와인 파인더(WiFi)',uid=uid)
+                    title='와인 파인더(WiFi)',user_id=user_id)
         else: 
             # 잘 넘어오는지 체크
-            uid = request.form.get('uid')
-            upw = request.form.get('upw')
-            # return uid + " : " + upw
-            if not uid or not upw:
+            user_id = request.form.get('user_id')
+            user_pw = request.form.get('user_pw')
+            # return user_id + " : " + user_pw
+            if not user_id or not user_pw:
                 return render_template("alertEx.html", msg='정확하게 입력하세요')
             else:
-                row = selectLogin(uid,upw)
+                row = selectLogin(user_id,user_pw)
                 if row: #회원이다
                     # 세션설정(회원이 로그인 했음을 서버가 인지하는 방법)
                     # 간단한 것은 서버 메모리 사용, 통상 고급 -> 디비, 써드파트로 관리
                     # 세션 => 딕셔너리
                     # 세션 생성 // 권한이 없으면 접근을 못함.
-                    session['uid'] = uid
-                    session['name'] = row['name'] #row에 조회결과 있음//
+                    session['user_id'] = user_id
+                    # session['name'] = row['name'] #row에 조회결과 있음//
+                    session['id'] = row['id']
                     return redirect(url_for('home')) # url은 직접 하드코딩하지 않는다!! redirect('/')=>XX
                 else: #회원아니다
                     return render_template("alertEx.html", msg='회원아님')
-    
-    @app.route('/register')
-    def register():
-        # ufname = request.form.get('ufname')
-        # ulname = request.form.get('ulname')
-        # uid = request.form.get('uid')
-        # upw = request.form.get('upw')
-        return render_template("register.html")
 
     # 로그아웃
     @app.route('/logout') #로그아웃은 화면이 없고 일만하고 던짐.
     def logout():
         # 세션 없이 접근했을 경우 -> 홈페이지로 리다이렉트
-        if not 'uid' in session:  # 세션체크
+        if not 'user_id' in session:  # 세션체크
             return redirect(url_for('home'))
         # 세션제거
-        if 'uid' in session:
-            session.pop('uid', None) #uid를 제거하면서 반환해줌
+        if 'user_id' in session:
+            session.pop('user_id', None) #user_id를 제거하면서 반환해줌
         if 'name' in session:
             session.pop('name', None)
         # 홈페이지 리다이렉트
@@ -137,7 +130,7 @@ def initRoute(app):
     # 와인추천
     @app.route('/rec')
     def rec():
-        # id = selectId(session['uid'])[0]['id']
+        # id = selectId(session['user_id'])[0]['id']
         # print(id)
         winelist=learn(2)
         print("winelist: "+winelist)
@@ -148,7 +141,7 @@ def initRoute(app):
         #     # 1. 데이터 획득
         #     title       = request.form.get('title')
         #     contents    = request.form.get('contents')
-        #     author      = session['uid']
+        #     author      = session['user_id']
         #     f           = request.files['files'] #파일 여러개 업로드할때 하나만 뜸
         #     # ----------------------------------------------------------------
         #     files       = request.files.getlist('files')
@@ -207,7 +200,7 @@ def initRoute(app):
         #     # 1. 데이터 획득
         #     title = request.form.get('title')
         #     contents = request.form.get('contents')
-        #     author = session['uid']
+        #     author = session['user_id']
         #     f = request.files['files']  # 파일 여러개 업로드할때 하나만 뜸
         #     # ----------------------------------------------------------------
         #     files = request.files.getlist('files')
@@ -252,7 +245,7 @@ def initRoute(app):
     def pointsinfo():
         point_list = {}
         title_list = {}
-        user_id = session['uid']
+        user_id = session['user_id']
         for i in range(1,11):
             title_list[i] = request.values.get(f'rating_id{i}')
             point_list[i] = request.values.get(f'rating{i}')
@@ -263,7 +256,7 @@ def initRoute(app):
         print(point_list)
         id=selectId(user_id)
         print(id[0]['id'])
-        print(session['uid'])
+        print(session['user_id'])
         print(title_list)
 
         inputPointInfo(id[0]['id'],point_list,title_list)
@@ -271,4 +264,28 @@ def initRoute(app):
         
         return render_template('rec.html', infos=selectRec(winelist))
          
+    @app.route('/register', methods=['GET','POST'])
+    def register():
+        if request.method == 'GET':
+            return render_template("register.html")
 
+        else:
+            user_fname = request.form.get('user_fname')
+            user_lname = request.form.get('user_lname')
+            user_id = request.form.get('user_id')
+            user_pw = request.form.get('user_pw')
+
+            if not user_fname or not user_lname or not user_id or not user_pw:
+                return render_template("alertEx.html", msg='정확하게 입력하세요')
+
+            print(user_fname)
+            print(user_lname)
+            print(user_id)
+            print(user_pw)
+
+            insertUserInfo(user_fname, user_lname, user_id, user_pw)
+        
+            msg = '회원가입성공! 로그인해주세요.'
+            url = '/login'
+
+            return render_template('register_alert.html', msg = msg, url = url)
