@@ -292,6 +292,41 @@ def inputPointInfo(user_id, point_list, title_list):
     return 
 
 
+def insertUserInfo(user_fname, user_lname, user_id, user_pw):
+    db_session = None
+    rows = None
+
+    try:
+        db_session = sql.connect(host='localhost',
+                                user='root',
+                                password='1234',
+                                db='winedata',
+                                charset='utf8',
+                                cursorclass=sql.cursors.DictCursor)
+
+        with db_session.cursor() as cursor:
+
+            sql_str = '''
+                INSERT INTO user_info
+                (user_fname, user_lname, user_id, user_pw) 
+                VALUES
+                (%s ,%s, %s, %s);
+                '''
+
+            cursor.execute(sql_str,(
+                        user_fname,
+                        user_lname,  
+                        user_id,
+                        user_pw
+                        ))
+
+            db_session.commit()
+
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+    return 
+
 
 # 메인페이지 - 와인 데이터 가져오기
 def selectWineInfo():

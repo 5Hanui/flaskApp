@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo
+from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, insertUserInfo
 from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
@@ -82,14 +82,6 @@ def initRoute(app):
                     return redirect(url_for('home')) # url은 직접 하드코딩하지 않는다!! redirect('/')=>XX
                 else: #회원아니다
                     return render_template("alertEx.html", msg='회원아님')
-    
-    @app.route('/register')
-    def register():
-        # ufname = request.form.get('ufname')
-        # ulname = request.form.get('ulname')
-        # uid = request.form.get('uid')
-        # upw = request.form.get('upw')
-        return render_template("register.html")
 
     # 로그아웃
     @app.route('/logout') #로그아웃은 화면이 없고 일만하고 던짐.
@@ -262,4 +254,28 @@ def initRoute(app):
         
         return render_template('pointsinfo.html', infos=selectWineInfo())
          
+    @app.route('/register', methods=['GET','POST'])
+    def register():
+        if request.method == 'GET':
+            return render_template("register.html")
 
+        else:
+            user_fname = request.form.get('user_fname')
+            user_lname = request.form.get('user_lname')
+            user_id = request.form.get('user_id')
+            user_pw = request.form.get('user_pw')
+
+            if not user_fname or not user_lname or not user_id or not user_pw:
+                return render_template("alertEx.html", msg='정확하게 입력하세요')
+
+            print(user_fname)
+            print(user_lname)
+            print(user_id)
+            print(user_pw)
+
+            insertUserInfo(user_fname, user_lname, user_id, user_pw)
+        
+            msg = '회원가입성공! 로그인해주세요.'
+            url = '/login'
+
+            return render_template('register_alert.html', msg = msg, url = url)
