@@ -6,7 +6,7 @@ def selectLogin(uid, upw):
     try:
         db_session = sql.connect(host='localhost',
                             user='root',
-                            password='1234',
+                            password='root',
                             db='python_db',
                             charset='utf8',
                             cursorclass=sql.cursors.DictCursor)
@@ -38,7 +38,7 @@ def selectTradeList(pageNo=1, list_len=10): #기본값부여하면 파라미터 
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -71,7 +71,7 @@ def selectSearchWithKeyword(keyword):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -100,7 +100,7 @@ def selectStockByCode(code):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -124,7 +124,7 @@ def updateStockInfoByCode (info):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -156,7 +156,7 @@ def insertBbsData(data):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -192,7 +192,7 @@ def selectBbsList():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='python_db',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -220,7 +220,7 @@ def selectWineDetail(idx):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -252,7 +252,7 @@ def inputPointInfo(user_id, point_list, title_list):
         try:
             db_session = sql.connect(host='localhost',
                                     user='root',
-                                    password='1234',
+                                     password='root',
                                     db='winedata',
                                     charset='utf8',
                                     cursorclass=sql.cursors.DictCursor)
@@ -289,7 +289,7 @@ def inputPointInfo(user_id, point_list, title_list):
         finally:
             if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
                 db_session.close()
-    return 
+    return rows
 
 
 def insertUserInfo(user_fname, user_lname, user_id, user_pw):
@@ -335,7 +335,7 @@ def selectWineInfo():
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -345,7 +345,7 @@ def selectWineInfo():
             # 전달하면 오동작하고, 일반 포맷팅도 문제가 된다.
             # format()를 이용하여 쿼리문을 먼저 완성하고 수행
             sql_str = '''
-            SELECT * FROM wineinfo ORDER BY id asc limit 10;
+            SELECT * FROM wineinfo limit 10;
             '''
             cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
             rows = cursor.fetchall()  # row는 회원정보
@@ -364,7 +364,7 @@ def searchWineInfo(key):
     try:
         db_session = sql.connect(host='localhost',
                                  user='root',
-                                 password='1234',
+                                 password='root',
                                  db='winedata',
                                  charset='utf8',
                                  cursorclass=sql.cursors.DictCursor)
@@ -401,13 +401,72 @@ def selectUser():
                                  cursorclass=sql.cursors.DictCursor)
         print("디비접속성공")
         with db_session.cursor() as cursor:
-            sql_str = "SELECT * FROM user_rec ORDER BY id;"
+            sql_str = "SELECT * FROM pointinfo ORDER BY id;"
             cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
             row = cursor.fetchall()  # row는 회원정보
             # 디비쿼리문은 판단하지 않는다.
             # 오직 수행의 결과만을 제시한다.
             # (단, 쿼리상으로 어느정도 로직을 해결할 수 있다.)
             print(row)
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+            print("디비접속해제성공")
+    #쿼리결과인 회원정보리턴
+    return row
+
+def selectId(uid):
+    db_session = None
+    row = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='root',
+                                 db='python_db',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+        print("디비접속성공")
+        with db_session.cursor() as cursor:
+            sql_str = "SELECT id FROM users where uid=%s ORDER BY id;"
+            cursor.execute(sql_str,(uid,))  # 튜플이 1개일 경우 ('m',
+            row = cursor.fetchall()  # row는 회원정보
+            # 디비쿼리문은 판단하지 않는다.
+            # 오직 수행의 결과만을 제시한다.
+            # (단, 쿼리상으로 어느정도 로직을 해결할 수 있다.)
+            print(row)
+    except Exception as e:
+        print(e)
+    finally:
+        if db_session:  # 비번틀렸을 때 db_session은 None이 되므로 확인하기
+            db_session.close()
+            print("디비접속해제성공")
+    #쿼리결과인 회원정보리턴
+    return row
+
+
+def selectRec(wineList):
+    print(wineList, type(wineList))
+    db_session = None
+    row = None
+    try:
+        db_session = sql.connect(host='localhost',
+                                 user='root',
+                                 password='root',
+                                 db='winedata',
+                                 charset='utf8',
+                                 cursorclass=sql.cursors.DictCursor)
+        print("디비접속성공")
+        with db_session.cursor() as cursor:
+            sql_str = "SELECT * FROM wineinfo WHERE id IN ({0});".format(wineList)
+            print(sql_str)
+            cursor.execute(sql_str)  # 튜플이 1개일 경우 ('m',
+            row = cursor.fetchall()  # row는 회원정보
+            # 디비쿼리문은 판단하지 않는다.
+            # 오직 수행의 결과만을 제시한다.
+            # (단, 쿼리상으로 어느정도 로직을 해결할 수 있다.)
+            print(len(row), row)
     except Exception as e:
         print(e)
     finally:

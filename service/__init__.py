@@ -9,7 +9,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, jsonify
 # 서버 시작점에서부터 패키 경로를 따진다.
 from service.model import selectLogin, selectTradeList as stl, selectSearchWithKeyword
-from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, insertUserInfo
+from service.model import insertBbsData, selectBbsList, selectWineInfo, searchWineInfo, selectWineDetail, inputPointInfo, selectId, selectRec, insertUserInfo
 from service.userRec import learn
 # from service.model import * 하면 예약어 쓸수가 없음 as불가능
 
@@ -123,49 +123,53 @@ def initRoute(app):
         # => 이런식으로 구성된 서버=>미들웨어/어플리케이션서버
         return jsonify(rows)
 
-    # 자료실  (GET 입력화면 + 자료목록 , POST 자료실등록)
-    @app.route('/bbs', methods=['GET', 'POST'])
-    def bbs():
-        if request.method == 'GET':
-            return render_template('bbs.html'
-                            , infos=selectWineInfo())
-        else:
-            # 1. 데이터 획득
-            title       = request.form.get('title')
-            contents    = request.form.get('contents')
-            author      = session['uid']
-            f           = request.files['files'] #파일 여러개 업로드할때 하나만 뜸
-            # ----------------------------------------------------------------
-            files       = request.files.getlist('files')
-            print('='*10)
-            import os # 원래는 맨위
-            nmList = list()
-            for file in files: # 파일리스트
-                # file : 파일 
-                print(file.filename)
-                save_path = os.path.join(os.getcwd(),
-                                     'service', 'static', 'upload', file.filename)
-                # 모든 파일을 디스크상에 저장
-                # f->file로 수정후 ctrl+shift+R
-                file.save(save_path)
-                nmList.append('/static/upload/'+ file.filename)
-            print('='*10)
-            # ----------------------------------------------------------------
-            data = {
-                "title":title,
-                "contents" : contents,
-                "author": author,
-                "path":"|".join(nmList)
-            }
-            msg = None
-            url = None
-            if insertBbsData(data):
-                # 4. 응답(등록되었습니다.) -> 확인 -> /bbs 이동(get)
-                msg = "등록 성공"
-                url = url_for('bbs')
-            else:
-                msg = '등록 실패'
-            return render_template("alertEx.html", msg=msg ,url=url)
+    # 와인추천
+    @app.route('/rec')
+    def rec():
+        # id = selectId(session['uid'])[0]['id']
+        # print(id)
+        winelist=learn(2)
+        print("winelist: "+winelist)
+        # if request.method == 'GET':
+        return render_template('rec.html'
+                               , infos=selectRec(winelist))
+        # else:
+        #     # 1. 데이터 획득
+        #     title       = request.form.get('title')
+        #     contents    = request.form.get('contents')
+        #     author      = session['uid']
+        #     f           = request.files['files'] #파일 여러개 업로드할때 하나만 뜸
+        #     # ----------------------------------------------------------------
+        #     files       = request.files.getlist('files')
+        #     print('='*10)
+        #     import os # 원래는 맨위
+        #     nmList = list()
+        #     for file in files: # 파일리스트
+        #         # file : 파일 
+        #         print(file.filename)
+        #         save_path = os.path.join(os.getcwd(),
+        #                              'service', 'static', 'upload', file.filename)
+        #         # 모든 파일을 디스크상에 저장
+        #         # f->file로 수정후 ctrl+shift+R
+        #         file.save(save_path)
+        #         nmList.append('/static/upload/'+ file.filename)
+        #     print('='*10)
+        #     # ----------------------------------------------------------------
+        #     data = {
+        #         "title":title,
+        #         "contents" : contents,
+        #         "author": author,
+        #         "path":"|".join(nmList)
+        #     }
+        #     msg = None
+        #     url = None
+        #     if insertBbsData(data):
+        #         # 4. 응답(등록되었습니다.) -> 확인 -> /bbs 이동(get)
+        #         msg = "등록 성공"
+        #         url = url_for('bbs')
+        #     else:
+        #         msg = '등록 실패'
+        #     return render_template("alertEx.html", msg=msg ,url=url)
             #######################################################3
             # return ''
 
@@ -184,47 +188,47 @@ def initRoute(app):
 
 
 
-    @app.route('/graph', methods=['GET', 'POST'])
+    @app.route('/graph', methods=['GET'])
     def graph():
         if request.method == 'GET':
             return render_template('graph.html', rows=selectBbsList())
-        else:
-            # 1. 데이터 획득
-            title = request.form.get('title')
-            contents = request.form.get('contents')
-            author = session['uid']
-            f = request.files['files']  # 파일 여러개 업로드할때 하나만 뜸
-            # ----------------------------------------------------------------
-            files = request.files.getlist('files')
-            print('='*10)
-            import os  # 원래는 맨위
-            nmList = list()
-            for file in files:  # 파일리스트
-                # file : 파일
-                print(file.filename)
-                save_path = os.path.join(os.getcwd(),
-                                         'service', 'static', 'upload', file.filename)
-                # 모든 파일을 디스크상에 저장
-                # f->file로 수정후 ctrl+shift+R
-                file.save(save_path)
-                nmList.append('/static/upload/' + file.filename)
-            print('='*10)
-            # ----------------------------------------------------------------
-            data = {
-                "title": title,
-                "contents": contents,
-                "author": author,
-                "path": "|".join(nmList)
-            }
-            msg = None
-            url = None
-            if insertBbsData(data):
-                # 4. 응답(등록되었습니다.) -> 확인 -> /bbs 이동(get)
-                msg = "등록 성공"
-                url = url_for('bbs')
-            else:
-                msg = '등록 실패'
-            return render_template("alertEx.html", msg=msg, url=url)
+        # else:
+        #     # 1. 데이터 획득
+        #     title = request.form.get('title')
+        #     contents = request.form.get('contents')
+        #     author = session['uid']
+        #     f = request.files['files']  # 파일 여러개 업로드할때 하나만 뜸
+        #     # ----------------------------------------------------------------
+        #     files = request.files.getlist('files')
+        #     print('='*10)
+        #     import os  # 원래는 맨위
+        #     nmList = list()
+        #     for file in files:  # 파일리스트
+        #         # file : 파일
+        #         print(file.filename)
+        #         save_path = os.path.join(os.getcwd(),
+        #                                  'service', 'static', 'upload', file.filename)
+        #         # 모든 파일을 디스크상에 저장
+        #         # f->file로 수정후 ctrl+shift+R
+        #         file.save(save_path)
+        #         nmList.append('/static/upload/' + file.filename)
+        #     print('='*10)
+        #     # ----------------------------------------------------------------
+        #     data = {
+        #         "title": title,
+        #         "contents": contents,
+        #         "author": author,
+        #         "path": "|".join(nmList)
+        #     }
+        #     msg = None
+        #     url = None
+        #     if insertBbsData(data):
+        #         # 4. 응답(등록되었습니다.) -> 확인 -> /bbs 이동(get)
+        #         msg = "등록 성공"
+        #         url = url_for('bbs')
+        #     else:
+        #         msg = '등록 실패'
+        #     return render_template("alertEx.html", msg=msg, url=url)
             #######################################################3
             # return ''
 
@@ -246,13 +250,15 @@ def initRoute(app):
             if (point_list[i]) == None:
                 point_list[i] = 0
         print(point_list)
+        id=selectId(user_id)
+        print(id[0]['id'])
         print(session['uid'])
         print(title_list)
 
-        inputPointInfo(user_id,point_list,title_list)
+        inputPointInfo(id[0]['id'],point_list,title_list)
+        winelist = learn(2)
         
-        
-        return render_template('pointsinfo.html', infos=selectWineInfo())
+        return render_template('rec.html', infos=selectRec(winelist))
          
     @app.route('/register', methods=['GET','POST'])
     def register():
