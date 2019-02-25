@@ -13,10 +13,12 @@
             <form id='searchWine' method="POST" enctype="multipart/form-data">
                 <fieldset>
                     <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <div class="input-group" >
+                        
+                            
+                        <div class="input-group" >
+                            <div class="col-sm-12 col-md-12">
                                 <label>Taste
-                                    <select class="form-control" onchange="categoryChange(this)" name='taste1'>
+                                    <select class="form-control" id='taste1' onchange="categoryChange(this)" name='taste1' style="float:left;">
                                         <option>Select</option>
                                         <option value="a">spicy</option>
                                         <option value="b">fruity</option>
@@ -29,11 +31,13 @@
                                         <option value="i">sweet</option>
                                         <option value="j">dry</option>
                                     </select>
-                                    <select class="form-control" id="good" name='taste2'>
+                                    <select class="form-control" id="good" name='taste2' style="float:left;">
                                         <option>Select</option>
                                     </select>
+                                </label>
+                                <label>
                                     Country
-                                    <select class="form-control" name='country'>
+                                    <select class="form-control" name='country' style="float:left;" >
                                         <option>원산지</option>
                                         <option>US</option>
                                         <option>France</option>
@@ -47,7 +51,7 @@
                         
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-12">
                             <div class="input-group">
                                 <input type="text" name='wineKeyword' class="form-control border-1 small" placeholder="Search for..."
                                     aria-label="Search" aria-describedby="basic-addon2">
@@ -72,7 +76,7 @@
                                     <h4 class="card-title">
                                         <a href="/wineinfo/{{info['id']}}">{{info['title']}}</a>                                                    </h4>
                                     <h5>가격       : ${{info['price']}}</h5>
-                                    <h6>원산지     : {{info['province']}}</h6>
+                                    <h6>원산지     : {{info['country']}} , {{info['province']}}</h6>
                                     <h6>Wine Color : {{info['color']}}</h6>
                                     <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!
                                                                 Lorem ipsum dolor sit amet.</p> -->

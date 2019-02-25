@@ -1,5 +1,4 @@
 function categoryChange(e) {
-    print(e)
     var good_a = ["spice", "crisp", "pepper", "cinnamon"];
     var good_b = ["fruit", "plum", "apple", "juici", "peach"];
     var good_c = ["acid", "tannin", "ripe", "lemon", "bitter"];

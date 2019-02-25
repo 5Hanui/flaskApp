@@ -35,17 +35,20 @@ def initRoute(app):
         resp.set_cookie('uid', session['uid']) #쿠키도 자료구조 딕셔너리!
         if request.method == 'GET':
             infos = selectWineInfo()
-            print(infos)
             return render_template('index.html', infos=selectWineInfo())
         else:
             taste1 = request.form.get('taste1')
             tasteBig = {'a': 'spicy', 'b': 'fruity', 'c': 'acidity', 'd': 'floral',
-                        'e': 'oaky', 'f': 'citrus', 'g': 'woody', 'h': 'light', 'i': 'sweet', 'j': 'dry'}
+                        'e': 'oaky', 'f': 'citrus', 'g': 'woody', 'h': 'light', 'i': 'sweet', 'j': 'dry', 'Select':''}
             taste2 = request.form.get('taste2')
+            if taste2=='Select' : taste2='' 
             wineKeyword = request.form.get('wineKeyword')
-            if (taste1 == 'Select') and (taste2=='Select') and (wineKeyword == ''):
+            country = request.form.get('country')
+            if country == '원산지': country = ''
+            if (tasteBig[taste1] == '') and (taste2=='') and ((wineKeyword == '') or (wineKeyword != '')) and (country==''):
                 return render_template('index.html', infos=selectWineInfo())
-            search = {'taste1': tasteBig[taste1],'taste2': taste2, 'wineKeyword': wineKeyword}
+            search = {'taste1': tasteBig[taste1], 'taste2': taste2,
+                      'wineKeyword': wineKeyword, 'country': country}
             infos=searchWineInfo(search)
             if infos==():
                 return render_template("alertEx.html", msg='입력결과가 없습니다.', url='/')

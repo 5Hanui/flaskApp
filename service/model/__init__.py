@@ -235,7 +235,6 @@ def selectWineDetail(idx):
             cursor.execute(sql_str, idx)  # 튜플이 1개일 경우 ('m',
             rows = cursor.fetchall()  # row는 회원정보
  
-        print(rows)
     except Exception as e:
         print(e)
     finally:
@@ -322,8 +321,6 @@ def selectWineInfo():
     return rows
 # 메인페이지 - 와인 검색
 def searchWineInfo(key):
-    print(key)
-    
     db_session = None
     rows = None
     try:
@@ -340,9 +337,8 @@ def searchWineInfo(key):
             # format()를 이용하여 쿼리문을 먼저 완성하고 수행
             sql_str = '''
             SELECT * FROM wineinfo WHERE (description LIKE '%{0}%' OR description LIKE '%{1}%') 
-            AND (title LIKE '%{2}%' ) ORDER BY id asc LIMIT 12;
-            ''' .format(key['taste1'], key['taste2'], key['wineKeyword'])
-            print(sql_str)
+            AND (title LIKE '%{2}%' ) AND (country = '{3}') ORDER BY id asc LIMIT 12;
+            ''' .format(key['taste1'], key['taste2'], key['wineKeyword'], key['country'])
             # 튜플이 1개일 경우 ('m',
             cursor.execute(sql_str)
             rows = cursor.fetchall()  # row는 회원정보
